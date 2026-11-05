@@ -14,6 +14,20 @@ mvn test
 
 En NetBeans: clic derecho sobre el proyecto → **Test** (o `Alt + F6`).
 
+## Interfaz gráfica
+
+`ShippingApp` es una ventana Swing (sin dependencias extra) que recalcula el envío y el total **mientras se escribe**: elige la ciudad, el peso y el subtotal, y muestra el desglose (peso × 2,5, recargo fuera de Bogotá, envío y total). No tiene reglas de negocio propias: usa `Checkout` a través de `ShopConfig`, así que cualquier cambio futuro en el cálculo se refleja solo en la pantalla.
+
+Para abrirla:
+
+- **NetBeans:** clic derecho sobre `ShippingApp.java` → **Run File** (`Shift + F6`).
+- **Terminal:**
+
+  ```bash
+  mvn compile
+  java -cp target/classes shop.ShippingApp
+  ```
+
 ## Estado final del código
 
 ```
@@ -22,7 +36,8 @@ src/main/java/shop/
 ├── ShippingCalculator.java       interfaz que usa el cliente
 ├── SmartShippingCalculator.java  cálculo nuevo (2,5 por kilo, +5 fuera de Bogotá)
 ├── Checkout.java                 recibe un ShippingCalculator por constructor
-└── ShopConfig.java               arma el Checkout con el cálculo nuevo
+├── ShopConfig.java               arma el Checkout con el cálculo nuevo
+└── ShippingApp.java              interfaz gráfica (Swing)
 ```
 
 ## Dónde está el Proxy
