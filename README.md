@@ -1,5 +1,7 @@
 # Taller: un Proxy para migrar sin salir de `main`
 
+[![CI](https://github.com/juanchacon-blip/stunning-octo-robot/actions/workflows/ci.yml/badge.svg)](https://github.com/juanchacon-blip/stunning-octo-robot/actions/workflows/ci.yml)
+
 Migración del cálculo de envío de una tienda usando **Trunk-Based Development** y el patrón **Proxy**. Todo el trabajo se hizo en una sola rama (`main`), con commits pequeños que dejan los tests en verde. El código nuevo entró apagado detrás de un Proxy con un feature flag y, al final, se encendió y se limpió.
 
 - **Lenguaje:** Java 17
@@ -16,7 +18,9 @@ En NetBeans: clic derecho sobre el proyecto → **Test** (o `Alt + F6`).
 
 ## Interfaz gráfica
 
-`ShippingApp` es una ventana Swing (sin dependencias extra) que recalcula el envío y el total **mientras se escribe**: elige la ciudad, el peso y el subtotal, y muestra el desglose (peso × 2,5, recargo fuera de Bogotá, envío y total). No tiene reglas de negocio propias: usa `Checkout` a través de `ShopConfig`, así que cualquier cambio futuro en el cálculo se refleja solo en la pantalla.
+`ShippingApp` es una ventana Swing (sin dependencias extra) que recalcula el envío y el total **mientras se escribe**. Elige la ciudad, mueve el peso con el campo o con el slider, y muestra el desglose: peso × 2,5, recargo fuera de Bogotá, envío y total. El botón **Guardar en historial** agrega el cálculo a una tabla con un acumulado.
+
+No tiene reglas de negocio propias: usa `Checkout` a través de `ShopConfig`, así que cualquier cambio futuro en el cálculo se refleja solo en la pantalla.
 
 Para abrirla:
 
@@ -28,6 +32,10 @@ Para abrirla:
   java -cp target/classes shop.ShippingApp
   ```
 
+## Integración continua
+
+El workflow `.github/workflows/ci.yml` corre `mvn test` con Java 17 en cada `push` y `pull request` a `main`. Es la versión automática de la regla del taller: **`main` siempre en verde**. La insignia de arriba muestra el estado de la última ejecución.
+
 ## Estado final del código
 
 ```
@@ -38,6 +46,12 @@ src/main/java/shop/
 ├── Checkout.java                 recibe un ShippingCalculator por constructor
 ├── ShopConfig.java               arma el Checkout con el cálculo nuevo
 └── ShippingApp.java              interfaz gráfica (Swing)
+
+src/test/java/shop/
+├── CheckoutTest.java
+├── SmartShippingCalculatorTest.java
+├── SmartShippingEdgeCasesTest.java   peso cero, decimales y Bogotá frente al resto
+└── ShopConfigTest.java
 ```
 
 ## Dónde está el Proxy
