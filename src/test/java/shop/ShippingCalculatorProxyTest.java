@@ -19,4 +19,11 @@ void usaSmartConFlagEncendido() {
     flags.enable("smart-shipping");
     assertEquals(15.0, proxy.calculate(order)); // 4 kg × 2,5 + 5
 }
+
+@Test
+void clienteFueraDelCanaryUsaLegacyAunConFlagEncendido() {
+    flags.enable("smart-shipping");
+    Order fuera = new Order("o2", "c3", "Medellín", 100, 4);
+    assertEquals(10.0, proxy.calculate(fuera));
+}
 }
